@@ -1,7 +1,45 @@
-from urlparse import urlparse
-import re # Regular Expressions
-# import string
+''' This program receives www.crunchyroll.com episode urls and parses them to auto generate 
+livestreamer command line arguments to download them to a file. It uses the information found in 
+URL to autogenerate the appropriate name in the Format Anime_Name_EpisodeNumber_Episode title
+It can receive one or more urls seperately or simultaneously as long as they are all seperated by 
+a carriage return (enter).
 
+-q, --quality  Specify the desired quality. Default is best # Not Implemented
+-h, --help     Output this help document
+    '''
+from urlparse import urlparse
+import sys # Command Line Arguments
+import re # Regular Expressions
+import getopt
+
+
+def main ():
+    ''' This program has 3 distinct stages. 
+    1. Request a set of urls from the user and store them
+    2. Parse and formulate the compiled Livestreamer command
+    3. Return the string to the user
+    '''
+    # parse command line options
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "h", ["help"])
+    except getopt.error, msg:
+        print msg
+        print "for help use --help"
+        sys.exit(2)
+    # process options
+    for o, a in opts:
+        if o in ("-h", "--help"):
+            print __doc__
+            sys.exit(1)
+    # process arguments
+    for arg in args:
+        process(arg) # process() is defined elsewhere
+
+    userProvidedURLs = getURLsFromUser()
+    parsedList = parseURLs (userProvidedURLs)
+    completeLivestreamerCommand = generateMultipleLivestreamerCommandLine(parsedList)
+
+    print completeLivestreamerCommand
 
 def swapOutDashesForUnderscores(modify):
     ''' Improve legibility by substituting all - for _
@@ -97,7 +135,8 @@ def generateLivestreamerCommand (parsedList):
     url    = parsedList [3] # http://www.crunchyroll...6-the-meat-invader-678171
 
     # Finished Command: 'livestreamer -o Food_Wars_Shokugeki_No_Soma_06__The_Meat_Invader http://www.crunchyroll.com/food-wars-shokugeki-no-soma/episode-6-the-meat-invader-678171 best;'
-    return "livestreamer -o " + show + "_" + number + title + " " + url + " best; " # ; tells command line to execute commands sequentially
+    # ; tells command line to execute each livestreamer command sequentially
+    return "livestreamer -o " + show + "_" + number + title + " " + url + " best; "  
 
 def generateDebugURLs ():
     ''' Return a list of 3 sample URLS
@@ -172,14 +211,5 @@ def parseURLs (listOfURLs):
         i = i + 1
     return listOfURLs
 
-
-''' This program has 3 distinct stages. 
-1. Request a set of urls from the user and store them
-2. Parse and formulate the compiled Livestreamer command
-3. Return the string to the user
-'''
-userProvidedURLs = getURLsFromUser()
-parsedList = parseURLs (userProvidedURLs)
-completeLivestreamerCommand = generateMultipleLivestreamerCommandLine(parsedList)
-
-print completeLivestreamerCommand
+if __name__ == "__main__":
+    main()
