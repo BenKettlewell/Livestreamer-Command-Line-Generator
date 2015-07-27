@@ -136,7 +136,7 @@ def generateLivestreamerCommand (parsedList):
 
     # Finished Command: 'livestreamer -o Food_Wars_Shokugeki_No_Soma_06__The_Meat_Invader http://www.crunchyroll.com/food-wars-shokugeki-no-soma/episode-6-the-meat-invader-678171 best;'
     # ; tells command line to execute each livestreamer command sequentially
-    return "livestreamer -o " + show + "_" + number + title + " " + url + " best; "  
+    return "livestreamer -o " + show + "_" + number + title + ".mp4 " + url + " best; "  
 
 def generateDebugURLs ():
     ''' Return a list of 3 sample URLS
