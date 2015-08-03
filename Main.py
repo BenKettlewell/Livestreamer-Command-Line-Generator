@@ -156,6 +156,7 @@ def getURLsFromUser():
     print prompt
 
     listOfURLs = [] # Array of URLs to be filled with user provided URLS 
+    seasonTag = "off"
     while True:
         userInput = raw_input()
         if (userInput.lower() == "debug"): # DEBUG option for convenient testing
@@ -163,14 +164,21 @@ def getURLsFromUser():
             break
         elif (userInput.lower() == "done" or userInput == ""):  # Finished input
             break
+        elif (userInput.lower().split()[0] in ("--season","-s")):  # Set the season tag for the next set of URLs
+                                                                   # Toggle On / Off
+            '''Determine what season they want the next set of urls or stop season mode etc.
+            '''
+            seasonTag = userInput.split()[1]
+            if (seasonTag.lower() in ("off","stop")):
+                seasonTag = ""
+            else:
+                seasonTag = seasonTag + " "
         elif ("www.crunchyroll.com" not in userInput.lower()): # Initial validation that it is a Crunchyroll URL
             raise TypeError ("Input must be a crunchyroll url")
             break
-        elif ("--season" in userInput.lower()):  # Season support
-            '''Determine what season they want the next set of urls or stop season mode etc.
-            '''
-            raise NotImplementedError
         else:                                               # Add URL to the List
+            userInput = seasonTag + userInput; # Season tag will be extracted in parseOneURL first
+                                               # User provided seasonTag placed infront of the url followed with a -s marker
             listOfURLs.append(userInput)
     return listOfURLs
 
@@ -185,6 +193,12 @@ def parseOneURL(fullURL):
         EpisodeTitle    - Same as Anime Name 
         fullURL         - Left exactly as provided by user
     '''
+    fullURL = fullURL.strip()
+    seasonTag = ""
+    if (" " in fullURL): # Indicates a "Seasong_Tag URL"
+        seasonTag = "_" + fullURL.split()[0] # Store Season Tag
+        fullURL = fullURL.split()[1] # Removes Season Tag
+        fullURL = fullURL.strip() # Make sure no spaces were left behind
 
     URLParsedObject = urlparse(fullURL)
     URLPath = URLParsedObject.path
@@ -195,9 +209,10 @@ def parseOneURL(fullURL):
     # start food-wars-shokugeki-no-soma/episode-6-the-meat-invader-678171
     URLPath = swapOutDashesForUnderscores(URLPath)          # food_wars_shokugeki_no_soma/episode_6_the_meat_invader_678171
     wordGroups = findWordGroups(URLPath)                    # [food_wars_shokugeki_no_soma, eipsode, the_meat_invader]
-    ShowName = upperAfterSpaceCharacter(wordGroups[0])      # 
-    EpisodeTitle = upperAfterSpaceCharacter(wordGroups[2])
-    EpisodeNumber = findEpisodeNumber (URLPath)
+    ShowName = upperAfterSpaceCharacter(wordGroups[0]) \
+                                           + seasonTag      # _Food_Wars_Shokugeki_No_Soma_[SnTg]
+    EpisodeTitle = upperAfterSpaceCharacter(wordGroups[2])  # The_Meat_Invader
+    EpisodeNumber = findEpisodeNumber (URLPath)             # 06
     return [ShowName, EpisodeTitle, EpisodeNumber, fullURL]
 
 def parseURLs (listOfURLs): 
