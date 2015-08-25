@@ -156,7 +156,7 @@ def getURLsFromUser():
     print prompt
 
     listOfURLs = [] # Array of URLs to be filled with user provided URLS 
-    seasonTag = "off"
+    seasonTag = ""
     while True:
         userInput = raw_input()
         if (userInput.lower() == "debug"): # DEBUG option for convenient testing
@@ -169,7 +169,7 @@ def getURLsFromUser():
             '''Determine what season they want the next set of urls or stop season mode etc.
             '''
             seasonTag = userInput.split()[1]
-            if (seasonTag.lower() in ("off","stop")):
+            if (seasonTag.lower() in ("off","stop","")):
                 seasonTag = ""
             else:
                 seasonTag = seasonTag + " "
