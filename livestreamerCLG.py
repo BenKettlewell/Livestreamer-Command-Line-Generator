@@ -12,7 +12,7 @@ import sys # Command Line Arguments
 import re # Regular Expressions
 import getopt
 
-
+#This Is a Banana
 def main ():
     ''' This program has 3 distinct stages. 
     1. Request a set of urls from the user and store them
