@@ -40,6 +40,7 @@ def main ():
     completeLivestreamerCommand = generateMultipleLivestreamerCommandLine(parsedList)
 
     print completeLivestreamerCommand
+	done = raw_input()
 
 def swapOutDashesForUnderscores(modify):
     ''' Improve legibility by substituting all - for _
