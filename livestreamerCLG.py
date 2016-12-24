@@ -19,10 +19,11 @@ def main (argv):
     2. Parse and formulate the compiled Livestreamer command
     3. Return the string to the user
     '''
-    urls = 'x'
+    urls = ''
+    file_csv = ''
     # parse command line options
     try:
-        opts, args = getopt.getopt(argv, "hu:", ["help","url="])
+        opts, args = getopt.getopt(argv, "hu:f:", ["help","url=","file="])
     except getopt.error, msg:
         print msg
         print "for help use --help"
@@ -35,13 +36,18 @@ def main (argv):
         if o in ("-u", "--url"):
             urls = a
             print'urls are :', a
+        if o in ("-f", "--file"):
+            file_csv = a
+            print'csv_file :', a
     # process arguments
     for arg in args:
         process(arg) # process() is defined elsewhere
-    
 
-    crunchyCSV = CrunchyCSV('./DataFiles/animeData.csv')
-    print crunchyCSV
+    crunchyCSV = CrunchyCSV(file_csv)
+    
+    for anime in crunchyCSV.list:
+        print anime.showName
+    
     #userProvidedURLs = getURLsFromUser()
     #parsedList = parseURLs (userProvidedURLs)
     #completeLivestreamerCommand = generateMultipleLivestreamerCommandLine(parsedList)
