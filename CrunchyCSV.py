@@ -2,7 +2,10 @@ import csv
 from Anime import Anime
 
 class CrunchyCSV(object):
-    
+    ''' Reads a CSV file and builds a list of Anime objects populated with
+    data from, or derived from, the file
+    CSV format: crunchyroll_anime_url, subtitle_url, season_number
+    '''
     def __init__(self, file_path=''):
         self.file_path = file_path
         self.list = []
