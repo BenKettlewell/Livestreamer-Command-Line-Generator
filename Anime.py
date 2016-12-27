@@ -5,9 +5,9 @@ class Anime(object):
     def __init__(self, anime_url, sub_url, season):
         self.anime_url = anime_url
         self.sub_url = sub_url
-        self.season = season
+        self.season = '' if season == '' else 'S'+season+'_'
         self.parse_url()
-        self.file_name = self.showName.title() +'_'+ self.season +'_'+ \
+        self.file_name = self.showName.title() +'_'+ self.season +'E'+ \
                           self.episodeNumber +'_'+ self.episodeTitle.title() 
         
     def __repr__(self):
@@ -32,7 +32,7 @@ class Anime(object):
     def generate_youtube_dl(self):
         """
         youtube-dl -u $u_name \
-        -o Haikyu_S3_06_The_Chemical_Change_of_Encounters --write-sub \ 
+        -o Haikyu_S03_E06_The_Chemical_Change_of_Encounters --write-sub \ 
         --sub-lang enUS --sub-format ass \
         http://www.crunchyroll.com/haikyu/episode-6-the-chemical-change-of-encounters-721869
         """
