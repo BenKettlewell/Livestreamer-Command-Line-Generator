@@ -30,13 +30,15 @@ class Anime(object):
         self.crunchyID      = dict['crunchyID']
 
     def generate_youtube_dl(self):
-        """
-        youtube-dl -u $u_name \
-        -o Haikyu_S03_E06_The_Chemical_Change_of_Encounters --write-sub \ 
-        --sub-lang enUS --sub-format ass \
-        http://www.crunchyroll.com/haikyu/episode-6-the-chemical-change-of-encounters-721869
-        """
+        ''' Returns string for youtube-dl command
+        Downloads subtitle file as .ass with video as .mp4 highest quality
+        '''
         return """/usr/bin/python3 /usr/local/bin/youtube-dl -u $CRUNCHY_UNAME \
 -p $CRUNCHY_PASS -o %s.mp4 --write-sub --sub-lang enUS --sub-format ass %s""" \
         % (self.file_name, self.anime_url) 
         
+    def generateLivestreamerCommand(self):
+        ''' Returns string for livestreamer command
+        
+        '''
+        return "livestreamer -o %s.mp4 %s best" % (self.file_name, self.anime_url)
