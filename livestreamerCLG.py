@@ -42,11 +42,17 @@ def main (argv):
     # process arguments
     for arg in args:
         process(arg) # process() is defined elsewhere
+    if file_csv != '':
+        crunchyCSV = CrunchyCSV(file_csv)
+        youtube_dl_list = []
+        for anime in crunchyCSV.list:
+            youtube_dl_list.append(anime.generate_youtube_dl())
+        print ("; ".join(youtube_dl_list))
+    else:
+        from Anime import Anime
+        anime = Anime(urls, '', '')
+        print anime.generate_youtube_dl()
 
-    crunchyCSV = CrunchyCSV(file_csv)
-    
-    for anime in crunchyCSV.list:
-        print anime.showName
     
     #userProvidedURLs = getURLsFromUser()
     #parsedList = parseURLs (userProvidedURLs)
