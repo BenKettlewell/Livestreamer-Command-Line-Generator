@@ -27,13 +27,13 @@ def findEpisodeNumber (modify):
     Return: 06
     '''
     numberSet = re.compile('[0-9]+')
-    episodeNumber = fixEpisodeNumber (numberSet.findall(modify)[0])
+    episodeNumber = fixEpisodeNumber(numberSet.findall(modify)[0])
     return episodeNumber.strip('_')
 
 def findLastNumberSet (modify):
     ''' Given a URL return the last number set delimited by an underscore
     '''
-    # underscore followed by all(*) numbers([0-9] not greedy(?) from end($)
+    # underscore followed by all(*) numbers([0-9]) not greedy(?) from end($)
     # 01_episode_title_33_12345 => grabs only _12345
     lastNumberFormat = re.compile('_[0-9]*?$') 
     
@@ -56,28 +56,6 @@ def fixEpisodeNumber (modify):
     
 def removeThisFromString (removeThis, fromThis):
     return fromThis.strip(str(removeThis)).strip('_')
-    
-def upperAfterSpaceCharacter (modify):
-    ''' Capitalize the start of each word and remove trailing characters.
-    The beginning of a word is indicated by the very first letter found in a string, or 
-    a letter proceeded by underscore, dash, space, or backslash ('_','-', ' ','/')
-    Given:  food_wars_shokugeki_no_soma/episode_6_the_meat_invader_678171 
-    Return: Food_Wars_Shokugeki_No_Soma/Episode_6_The_Meat_Invader_678171 
-    '''
-    spaceCharacters = ['-','_',' ','/']
-        
-    afterSpaceCharacter = False  # TRUE when spaceCharacter found. FALSE when character capitalized
-    myList = list(modify) # Strings are immutable, therefore make a list of the characters so we can modify them
-
-    for i in xrange (0, len(myList)):
-        if afterSpaceCharacter == True or (i == 0 and myList[i] not in spaceCharacters):
-            myList[i] = str.capitalize(myList[i])  
-            afterSpaceCharacter = False
-        if myList[i] in spaceCharacters:
-            afterSpaceCharacter = True
-    if myList[len(myList)-1] in spaceCharacters: # Remove a trailing _,-,/
-        myList.pop(len(myList)-1)
-    return "".join(myList)
     
 def parse_URL(fullURL):
     ''' Given a single Crunchyroll.com url, it will extract and format the relevant information
