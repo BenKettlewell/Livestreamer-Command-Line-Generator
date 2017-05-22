@@ -16,6 +16,8 @@ import sys # Command Line Arguments
 import getopt # Parse CLI Args
 import re # Regular Expressions
 from CrunchyCSV import CrunchyCSV
+from Anime import Anime
+from crunchyroll import outputer
 
 def main (argv):
     ''' This program has 3 distinct stages. 
@@ -46,16 +48,13 @@ def main (argv):
     # process arguments
     for arg in args:
         process(arg) # process() is defined elsewhere
+
     if file_csv != '':
         crunchyCSV = CrunchyCSV(file_csv)
-        youtube_dl_list = []
-        for anime in crunchyCSV.list:
-            youtube_dl_list.append(anime.generate_youtube_dl())
-        print ("; ".join(youtube_dl_list))
+        print outputer.youtube_dl_string_for_CrunchyCSV(crunchyCSV)
     else:
-        from Anime import Anime
         anime = Anime(urls, '', '')
-        print anime.generate_youtube_dl()
+        print outputer.youtube_dl_string_for_Anime(anime)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
