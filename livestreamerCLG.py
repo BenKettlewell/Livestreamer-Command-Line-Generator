@@ -52,9 +52,10 @@ def main (argv):
     if file_csv != '':
         crunchyCSV = CrunchyCSV(file_csv)
         print outputer.youtube_dl_string_for_CrunchyCSV(crunchyCSV)
+        print outputer.list_of_anime_filenames(crunchyCSV)
     else:
         anime = Anime(urls, '', '')
         print outputer.youtube_dl_string_for_Anime(anime)
-
+        
 if __name__ == "__main__":
     main(sys.argv[1:])
