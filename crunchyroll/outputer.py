@@ -1,10 +1,10 @@
-def youtube_dl_string_for_CrunchyCSV(crunchyCSV):
+def youtube_dl_string_for_CrunchyCSV(crunchyCSV, auth_method):
 	youtube_dl_list = []
 	for anime in crunchyCSV.list:
-		youtube_dl_list.append(anime.generate_youtube_dl())
+		youtube_dl_list.append(anime.generate_youtube_dl(auth_method))
 	return ("; ".join(youtube_dl_list))
 
-def youtube_dl_string_for_Anime(anime):
+def youtube_dl_string_for_Anime(anime, auth_method):
 	return anime.generate_youtube_dl()
 
 def list_of_anime_filenames(crunchCSV):

@@ -29,13 +29,19 @@ class Anime(object):
         self.episodeNumber  = dict['episodeNumber']
         self.crunchyID      = dict['crunchyID']
 
-    def generate_youtube_dl(self):
+    def generate_youtube_dl(self, auth_method='password'):
         ''' Returns string for youtube-dl command
         Downloads subtitle file as .ass with video as .mp4 highest quality
         '''
-        return """/usr/bin/python3 /usr/local/bin/youtube-dl -u $CRUNCHY_UNAME \
--p $CRUNCHY_PASS -o %s.mp4 --write-sub --sub-lang enUS --sub-format ass %s""" \
-        % (self.file_name, self.anime_url) 
+        auth_string = ''
+        if (auth_method == "cookies"):
+            auth_string = "--cookies $COOKIES"
+        else:
+            auth_string = "-u $CRUNCHY_UNAME -p $CRUNCHY_PASS"
+        return """/usr/bin/python3 /usr/local/bin/youtube-dl %s \
+-o %s.mp4 --write-sub --sub-lang enUS --sub-format ass %s""" \
+        % (auth_string, self.file_name, self.anime_url)
+
         
     def generateLivestreamerCommand(self):
         ''' Returns string for livestreamer command
