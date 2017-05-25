@@ -20,6 +20,7 @@ import re # Regular Expressions
 from CrunchyCSV import CrunchyCSV
 from Anime import Anime
 from crunchyroll import outputer
+from shell import downloader
 
 def main (argv):
     ''' This program has 3 distinct stages. 
@@ -62,7 +63,8 @@ def main (argv):
         print outputer.list_of_anime_filenames(crunchyCSV)
     else:
         anime = Anime(urls, '', '')
-        print outputer.youtube_dl_string_for_Anime(anime, auth_method)
-        
+	print outputer.youtube_dl_string_for_Anime(anime, auth_method)
+
+print downloader.sub_call()
 if __name__ == "__main__":
     main(sys.argv[1:])
