@@ -34,13 +34,20 @@ class Anime(object):
         Downloads subtitle file as .ass with video as .mp4 highest quality
         '''
         auth_string = ''
+	platform = 'acer'
         if (auth_method == "cookies"):
             auth_string = "--cookies $COOKIES"
         else:
             auth_string = "-u $CRUNCHY_UNAME -p $CRUNCHY_PASS"
-        return """/usr/bin/python3 /usr/local/bin/youtube-dl %s \
+        if (platform == 'acer'):
+		return """python /usr/bin/youtube-dl %s -f best \
+%s -o %s.mp4 --write-sub --sub-lang enUS --sub-format ass \
+--max-downloads 1""" \
+        	% (self.anime_url, auth_string, self.file_name, )
+	else:
+		return """/usr/bin/python3 /usr/local/bin/youtube-dl %s \
 -o %s.mp4 --write-sub --sub-lang enUS --sub-format ass %s""" \
-        % (auth_string, self.file_name, self.anime_url)
+        	% (auth_string, self.file_name, self.anime_url)
 
         
     def generateLivestreamerCommand(self):
